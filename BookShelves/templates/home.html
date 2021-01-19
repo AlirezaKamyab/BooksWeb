@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %} Home | Books {% endblock %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            {% if 'SUCCESS' in message.extra_tags %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+
+            {% if 'DANGER' in message.extra_tags %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <h1>Welcome to the BookShelve</h1>
+    <p>Let's see the books that are available here</p>
+    <p>We have amazing reader, that have even read more than hunderds of books</p>
+    <p>You could register right now though</p>
+    {% if user.is_authenticated == True %}
+        <br><hr><br>
+        <table title="Books" style="width: 85%; margin: 0 auto;" class="table table-bordered">
+            <tr>
+                <th>Book</th>
+                <th>Author</th>
+                <th>Rating</th>
+                <th>Is Read</th>
+                <th>Actions</th>
+            </tr>
+            {% for book in list %}
+                <tr style="vertical-align: middle;">
+                    <td>{{book.BookName}}</td>
+                    <td>{{book.Author}}</td>
+                    <td>{{book.Rating}}</td>
+                    {% if book.Checked %}
+                        <td style="color: black; font-weight: bold;">Completed &nbsp; <a href="{% url 'updateBook' book.id %}" class="btn btn-warning">Click to Undo</a></td>
+                    {% else %}
+                         <td style="color: black; font-weight: bold;">Pending &nbsp; <a href= "{% url 'updateBook' book.id %}" class="btn btn-success">Click to Complete</a></td>
+                    {% endif %}
+                    <td><a class="btn btn-danger" href="{% url 'removeBook' book.id %}">Remove</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+        <br><br>
+        <div style="width: 75%; padding:10px; margin: 0 auto;">
+            <form method="POST">
+                {% csrf_token %}
+                <p style="font-size: x-large; font-weight: bold;">Register a book</p>
+                <div class="mb-3">
+                <label class="form-label">Book Name</label>
+                <input type="text" class="form-control" name="BookName">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Author</label>
+                    <input type="text" class="form-control" name="Author">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Pages</label>
+                    <input type="number" class="form-control" name="Pages">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Rate</label>
+                    <input type="number" class="form-control" name="Rating">
+                </div>
+                <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="Checked">
+                <label class="form-check-label" for="exampleCheck1">Is the Book done</label>
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+        </div>
+    {% else %}
+        <p style="color: red; font-weight: bold; font-size: large;">Please log in to your account</p>
+    {% endif %}
+{% endblock %}

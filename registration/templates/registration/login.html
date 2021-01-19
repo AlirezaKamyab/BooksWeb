@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %} Login | Books {% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div style="width: 75%; padding:10px; margin: 0 auto;">
+        <form method="POST">
+            {% csrf_token %}
+            {{form|crispy}}
+            <p><a style="text-decoration: none;" href="{% url 'register' %}">CREATE NEW ACCOUNT</a></p>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+{% endblock %}

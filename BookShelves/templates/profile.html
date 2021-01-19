@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %} {{user}} | Profile {% endblock %}
+
+{% block content %}
+    <div style="padding: 50px; margin: 0 auto; width: 75%; border: 2px solid whitesmoke; border-radius: 10px; box-shadow: 1px 1px 10px black;">
+        <h2>{{user.first_name}} {{user.last_name}}</h2>
+        <p>Books registered : {{all}}</p>
+        <p>Books Completed : {{read}}</p>
+        <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
+    </div>
+{% endblock %}
